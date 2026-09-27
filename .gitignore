@@ -1,0 +1,7 @@
+# 工具自有状态：台账含会话 key、manifests 含内容指纹——绝不入库
+state/
+backups/
+raw/
+__pycache__/
+*.pyc
+.DS_Store

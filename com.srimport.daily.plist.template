@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Launchd template: incremental backfill, once a day, rate limited.
+     Copy to ~/Library/LaunchAgents/com.srimport.daily.plist and replace
+     __SR_IMPORT_DIR__ with this directory, then:
+       launchctl load -w ~/Library/LaunchAgents/com.srimport.daily.plist
+     Rate limiting matters: a store with a large pending queue can run out of
+     consolidation slots, and a source that never gets one never becomes a claim.
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.srimport.daily</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/zsh</string>
+        <string>__SR_IMPORT_DIR__/run.sh</string>
+        <string>run</string>
+        <string>--limit</string>
+        <string>300</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key><integer>3</integer>
+        <key>Minute</key><integer>15</integer>
+    </dict>
+    <key>WorkingDirectory</key>
+    <string>__SR_IMPORT_DIR__</string>
+    <key>StandardOutPath</key>
+    <string>__SR_IMPORT_DIR__/state/logs/sr-import.log</string>
+    <key>StandardErrorPath</key>
+    <string>__SR_IMPORT_DIR__/state/logs/sr-import.err</string>
+    <key>RunAtLoad</key>
+    <false/>
+</dict>
+</plist>
